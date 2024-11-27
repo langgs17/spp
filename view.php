@@ -23,47 +23,78 @@ $hasil = implode(" ", array_slice(explode(" ", $res['nama_kelas']), 0, $jumlah))
                 }
 
 */
-?>
-<?php
-// Mengambil data siswa berdasarkan id_siswa yang dikirim
-if (isset($_POST['id_siswa'])) {
-    $id_siswa = $_POST['id_siswa'];
-    $query = "SELECT siswa.*, angkatan.*, jurusan.*, kelas.* 
-              FROM siswa, angkatan, jurusan, kelas 
-              WHERE siswa.id_siswa = $id_siswa";
-    $exec = mysqli_query($conn, $query);
-    $res = mysqli_fetch_assoc($exec);
-}
-?>
+if(isset($_POST['id_siswa'])){
+	$id_siswa= $_POST['id_siswa'];
+	$query	 = "SELECT siswa.*, kelas.kelas FROM siswa INNER JOIN kelas ON siswa.id_kelas = kelas.id_kelas WHERE id_siswa = $id_siswa";
+  $exec = mysqli_query($conn, $query);
+  $res = mysqli_fetch_assoc($exec);
+  $kelas = $res['kelas'];
+  ?>
 
-<form action="editdatasiswa.php" method="post">
-    <!-- Hidden field untuk menyimpan id_siswa dan nisn -->
-    <input type="hidden" name="id_siswa" value="<?=$res['id_siswa']?>">
-    <input type="hidden" name="nisn" value="<?= $res['nisn'] ?>">
-    <input type="hidden" name="id_kelas" value="<?= $res['id_kelas'] ?>">
-
-
-
-    <!-- Input untuk menampilkan nisn -->
-    <input type="text" class="form-control mb-2" readonly value="<?= $res['nisn'] ?>" disabled>
-    <input type="text" class="form-control mb-2" readonly value="<?= $res['nama_angkatan'] ?>" disabled>
-    <input type="text" class="form-control mb-2" readonly name="" value="<?= $res['nama_kelas'] ?>" disabled>
-    <input type="text" class="form-control mb-2" readonly name="" value="<?= $res['nama_jurusan'] ?>" disabled>
-    <input type="text" class="form-control mb-2" required name="nama" value="<?= $res['nama'] ?>">
-    <input type="text" class="form-control mb-2" required name="ttl" value="<?= $res['ttl'] ?>">
-    <SELECT class="form-control mb-2" name="jenis_kelamin">
+  <form action="editdatasiswa.php" method="post">
+     <input type="hidden" name="id_siswa" value="<?=$res['id_siswa'] ?>">
+     <input type="hidden" name="kelas" value="<?=$res['kelas'] ?>">
+     <input type="text" class="form-control mb-2" readonly name="nisn" value="<?= $res['nisn'] ?>">
+     <input type="text" class="form-control mb-2" required name="nama" value="<?= $res['nama'] ?>">
+     <select class="form-control mb-2" name="jenis_kelamin">
       <option selected=""><?= empty($res['jenis_kelamin']) ? 'Jenis Kelamin' : $res['jenis_kelamin']; ?></option>
       <option value="laki-laki">Laki-Laki</option>
       <option value="perempuan">Perempuan</option>
-    </SELECT>
+     </select>
+     <input type="text" class="form-control mb-2" required name="ttl" value="<?= $res['ttl'] ?>">
+     <select class="form-control mb-2" name="id_kelas">
+      <option selected="">Pilih Kelas</option>
+          <?php
+          $exec = mysqli_query($conn, "SELECT * FROM kelas   WHERE kelas = $kelas order by id_kelas");
+          while ($angkatan = mysqli_fetch_assoc($exec)):
+           if ($res['id_kelas'] == $angkatan['id_kelas']) {
+            $selected = 'selected';
+          }else{
+            $selected = "";
+            
+          }
+          echo "<option $selected value=".$angkatan['id_kelas'].">" .$angkatan['nama_kelas']."</option>";
+        endwhile; 
+        ?>
+    </select>
+    <select class="form-control mb-2" name="id_jurusan">
+      <option selected="">Pilih Jurusan</option>
+        <?php
+        $exec = mysqli_query ($conn, "SELECT * FROM jurusan order by id_jurusan");
+        while ($angkatan = mysqli_fetch_assoc($exec)):
+         if ($res['id_jurusan'] == $angkatan['id_jurusan']) {
+          $selected = 'selected';
+        }else{
+          $selected = "";
+        }
+        echo "<option $selected value=".$angkatan['id_jurusan'].">" .$angkatan['nama_jurusan']."</option>";
+      endwhile; 
+      ?>
+    </select>
+    <select class="form-control mb-2" name="nama_angkatan">
+      <option selected="" > Pilih Angkatan </option>
+        <?php
+        $selected ="";
+        $exec = mysqli_query($conn, "SELECT * FROM angkatan order by id_angkatan");
+        while ($angkatan = mysqli_fetch_assoc($exec)):
+          if($res['id_angkatan'] == $angkatan['nama_angkatan']){
+           $selected = 'selected';
+         }  else{
+           $selected="";
+         }
+         echo "<option $selected value=".$angkatan['nama_angkatan'].">" .$angkatan['nama_angkatan']."</option>";
+       endwhile;
+       ?>
+     </select>
     <textarea class="form-control mb-2" required name="alamat" placeholder="Alamat Siswa"><?= $res['alamat'] ?></textarea>
+  
 
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" name="edit" class="btn btn-primary">Simpan</button>
-    </div>
+     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+     <button type="Submit" name="edit" class="btn btn-primary">Simpan</button>
 </form>
 
+<?php }?>
 
 <?php
 

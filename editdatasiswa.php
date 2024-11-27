@@ -1,14 +1,19 @@
-<?php 
-include 'header.php';
+<?php include 'header.php';
 include 'koneksi.php';
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+if (isset($_GET['nisn'])) {
+  $nisn = $_GET['nisn'];
 
-if (isset($_GET['id_siswa'])) {
-  $id_siswa = $_GET['id_siswa'];
-  $exec     = mysqli_query($conn, "DELETE FROM siswa WHERE id_siswa='$id_siswa'");
+  $query = "SELECT * FROM siswa WHERE nisn = $nisn";
+  $exec = mysqli_query($conn, $query);
+  $res = mysqli_fetch_assoc($exec);
+
+  $id_siswa = $res['id_siswa'];
+
+  $exec     = mysqli_query($conn, "DELETE FROM siswa WHERE nisn='$nisn'");
   $exec1     = mysqli_query($conn, "DELETE FROM pembayaran WHERE id_siswa='$id_siswa'");
+  $exec2     = mysqli_query($conn, "DELETE FROM siswatemp WHERE nisn='$nisn'");
+
   if ($exec && $exec1) {
     echo "<script>alert('data siswa berhasil dihapus')
     document.location = 'editdatasiswa.php';
@@ -52,30 +57,31 @@ while ($hasil = mysqli_fetch_array($q)) {
             <th>Angkatan</th>
             <th>Jurusan</th>
             <th>Kelas</th>
-            <th>Alamat</th>
             <th>Jenis Kelamin</th>
-            <th>Tempat Tgl Lahir</th>
+            <th>Tempat Tanggal Lahir</th>
+            <th>Alamat</th>
             <th>Aksi</th>
           </tr>
         </thead>
         <tbody>
           <?php
-          $query = "SELECT siswa.*, angkatan.*, jurusan.*, kelas.* FROM siswa, angkatan, jurusan, kelas WHERE siswa.id_angkatan = angkatan.nama_angkatan AND siswa.id_jurusan = jurusan.id_jurusan AND siswa.id_kelas = kelas.id_kelas ORDER BY id_siswa";
+          $query = "SELECT siswa.*, angkatan.*, jurusan.*, kelas.* FROM siswa, angkatan, jurusan, kelas WHERE siswa.id_angkatan = angkatan.nama_angkatan AND siswa.id_jurusan = jurusan.id_jurusan AND siswa.id_kelas = kelas.id_kelas ORDER BY siswa.nama DESC";
           $exec = mysqli_query($conn, $query);
           while ($res = mysqli_fetch_assoc($exec)) :
 
           ?>
             <tr>
+              <td hidden><?= $res['id_siswa'] ?></td>
               <td><?= $res['nisn'] ?></td>
               <td><?= $res['nama'] ?></td>
               <td><?= $res['nama_angkatan'] ?></td>
               <td><?= $res['nama_jurusan'] ?></td>
               <td><?= $res['nama_kelas'] ?></td>
-              <td><?= $res['alamat'] ?></td>
               <td><?= $res['jenis_kelamin'] ?></td>
               <td><?= $res['ttl'] ?></td>
+              <td><?= $res['alamat'] ?></td>
               <td>
-                <a href="editdatasiswa.php?id_siswa=<?= $res['id_siswa'] ?>" class="btn btn-sm btn-danger" onclick="return confirm ('Apakah yakin ingin menghapus data?')">Hapus</a>
+                <a href="editdatasiswa.php?nisn=<?= $res['nisn'] ?>" class="btn btn-sm btn-danger" onclick="return confirm ('Apakah yakin ingin menghapus siswa (<?php echo $res['nama']; ?>) ?')">Hapus</a>
                 <a href="#" class="view_data btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#myModal" id="<?php echo $res['id_siswa']; ?>">Edit</a>
               </td>
             </tr>
@@ -97,13 +103,13 @@ while ($hasil = mysqli_fetch_array($q)) {
       <div class="modal-body">
         <form action="" method="POST">
           <input type="text" required name="nama" placeholder="Nama Siswa" class="form-control mb-2">
-          <input type="text" name="ttl" placeholder="Tempat Tanggal Lahir contoh: Bandung, 11-11-2011" required class="form-control mb-2">
-          <SELECT class="form-control mb-2" name="jenis_kelamin">
-            <option selected="">Pilih Jenis Kelamin</option>
+          <select class="form-control mb-2" name="jenis_kelamin">
+            <option selected="">Jenis Kelamin</option>
             <option value="laki-laki">Laki-Laki</option>
             <option value="perempuan">Perempuan</option>
-          </SELECT>
-          <SELECT class="form-control mb-2" name="id_angkatan">
+          </select>
+          <input type="text" required name="ttl" placeholder="Tempat Tanggal Lahir" class="form-control mb-2">
+          <select class="form-control mb-2" name="id_angkatan">
             <option selected="">Pilih Angkatan</option>
             <?php
             $exec = mysqli_query($conn, "SELECT * FROM angkatan order by id_angkatan");
@@ -111,8 +117,8 @@ while ($hasil = mysqli_fetch_array($q)) {
               echo "<option value = " . $angkatan['nama_angkatan'] . ">" . $angkatan['nama_angkatan'] . "</option>";
             endwhile;
             ?>
-          </SELECT>
-          <SELECT class="form-control mb-2" name="id_jurusan">
+          </select>
+          <select class="form-control mb-2" name="id_jurusan">
             <option selected="">Pilih Jurusan</option>
             <?php
             $exec = mysqli_query($conn, "SELECT * FROM jurusan order by id_jurusan");
@@ -120,9 +126,9 @@ while ($hasil = mysqli_fetch_array($q)) {
               echo "<option value = " . $angkatan['id_jurusan'] . ">" . $angkatan['nama_jurusan'] . "</option>";
             endwhile;
             ?>
-          </SELECT>
-          </SELECT>
-          <SELECT class="form-control mb-2" name="id_kelas">
+          </select>
+          </select>
+          <select class="form-control mb-2" name="id_kelas">
             <option selected="">Pilih Kelas</option>
             <?php
             $exec = mysqli_query($conn, "SELECT * FROM kelas order by id_kelas");
@@ -130,12 +136,12 @@ while ($hasil = mysqli_fetch_array($q)) {
               echo "<option value = " . $angkatan['id_kelas'] . ">" . $angkatan['nama_kelas'] . "</option>";
             endwhile;
             ?>
-          </SELECT>
+          </select>
           <textarea class="form-control mb-2" required name="alamat" placeholder="Alamat Siswa"></textarea>
 
       </div>
       <div class="modal-footer">
-        <input type="hidden" name="angkatane" value="<?= $angkatan['nama_angkatan']; ?>">
+        <input type="hidden" name="angkatan" value="<?= $angkatan['nama_angkatan']; ?>">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="Submit" name="simpan" class="btn btn-primary">Simpan</button>
         </form>
@@ -180,7 +186,7 @@ if (isset($_POST['simpan'])) {
 
 
 
-  $q2 = "INSERT INTO siswatemp (nisn, tahun) VALUES ('$nisn','$tahun')";
+  $q2 = "insert into siswatemp (nisn, tahun) values ('$nisn','$tahun')";
   $qq = mysqli_query($conn, $q2);
 
   if ($exec) {
@@ -211,7 +217,7 @@ if (isset($_POST['simpan'])) {
     $awaltempo  = date('d-m-Y');
     $id_kelas = $res['id_kelas'];
 
-    $getkelas=mysqli_query($conn, "SELECT kelas FROM kelas WHERE id_kelas=$id_kelas");
+    $getkelas=mysqli_query($conn, "select kelas from kelas where id_kelas=$id_kelas");
     $hasil=mysqli_fetch_array($getkelas);
 
     for ($i = 7; $i <= 12; $i++) {
@@ -267,26 +273,55 @@ if (isset($_POST['simpan'])) {
   })
 </script>
 
+
 <?php
-// UPDATE data siswa
 if (isset($_POST['edit'])) {
-    $id_siswa = $_POST['id_siswa'];
-    $id_kelas = $_POST['id_kelas'];
-    $nisn = $_POST['nisn'];
-    $nama = $_POST['nama'];
-    $alamat = $_POST['alamat'];
-    $jenis_kelamin = $_POST['jenis_kelamin'];
-    $ttl = $_POST['ttl'];
 
-    $query_update_siswa = "UPDATE siswa SET id_kelas = '$id_kelas', nama = '$nama', alamat = '$alamat', jenis_kelamin = '$jenis_kelamin', ttl = '$ttl' WHERE id_siswa = '$id_siswa'";
+  $id_siswa = $_POST['id_siswa'];
+  $nisn = $_POST['nisn'];
+  $nama = $_POST['nama'];
+  $id_angkatan = $_POST['nama_angkatan'];
+  $id_kelas = $_POST['id_kelas'];
+  $id_jurusan = $_POST['id_jurusan'];
+  $alamat = $_POST['alamat'];
+  $jenis_kelamin = $_POST['jenis_kelamin'];
+  $ttl = $_POST['ttl'];
+  $kelas = $_POST['kelas'];
 
+  $slqupdatesiswa = "UPDATE siswa SET nisn = '$nisn', nama = '$nama', id_angkatan = '$id_angkatan', id_kelas = '$id_kelas', id_jurusan = '$id_jurusan', alamat = '$alamat', jenis_kelamin = '$jenis_kelamin', ttl = '$ttl' WHERE id_siswa = '$id_siswa'";
+  $updatesiswabaru = mysqli_query($conn, $slqupdatesiswa);
 
-    $result = mysqli_query($conn, $query_update_siswa);
+  if ($updatesiswabaru) {
 
-    if ($result) {
-        echo "<script>alert('Data siswa berhasil disimpan'); document.location = 'editdatasiswa.php';</script>";
-    } else {
-        echo "<script>alert('Data siswa gagal disimpan'); document.location = 'editdatasiswa.php';</script>";
-    }
+    $query	 = "SELECT * FROM kelas WHERE id_kelas = $id_kelas";
+    $exec = mysqli_query($conn, $query);
+    $res = mysqli_fetch_assoc($exec);
+
+    $namakelas = $res['nama_kelas'];
+    
+    $updates = "UPDATE siswatemp SET kls$kelas='$namakelas' WHERE nisn = '$nisn'";
+    $qupd = mysqli_query($conn, $updates);
+
+    echo "<script>alert('data siswa berhasil disimpan')
+    document.location = 'editdatasiswa.php';
+    </script>";
+  } else {
+    echo "<script>alert('data siswa gagal disimpan')
+    document.location = 'editdatasiswa.php';
+    </script>";
+  }
 }
+
+/*
+  if ($exec) {
+    echo "<script>alert('data siswa berhasil diedit')
+    document.location ='editdatasiswa.php' </script>
+    ";
+  } else {
+    echo "<script>alert('data siswa gagal diedit')
+    document.location ='editdatasiswa.php' </script>
+    ";
+  }
+  */
+
 ?>

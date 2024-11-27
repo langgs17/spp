@@ -1,3 +1,36 @@
+<?php
+session_start();
+
+include 'koneksi.php';
+if(isset($_POST['login'])) {
+    $user = htmlentities(strip_tags($_POST['user']));
+    $pass = htmlentities(strip_tags($_POST['pass']));
+
+    $query = "SELECT * FROM admin WHERE user_admin = '$user'";
+    $exec = mysqli_query($conn,$query);
+    if(mysqli_num_rows($exec) !== 0) {
+        $query = "SELECT * FROM admin WHERE pass_admin = '$pass'";
+        $exec = mysqli_query($conn,$query);
+            if(mysqli_num_rows($exec) !== 0) {
+            $res = mysqli_fetch_assoc($exec);
+            $_SESSION['admin'] = $res['id_admin'];
+            $_SESSION['nama_admin'] = $res['nama_admin'];
+            header('location: beranda.php');
+
+    }else {
+        echo "<script>alert('Password Salah');
+        document.location ='loginauth.php';
+        </script>";
+    }
+    }else{
+        echo "<script>alert('User Admin Tidak Tersedia')
+        document.location ='loginauth.php';
+        </script>";
+    }
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +42,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Login</title>
+    <title>Login Admin</title>
 
     <link href="img/logoku.png" rel="shortcut icon">
 
@@ -21,6 +54,7 @@
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
+
 <style class="text/css">
 body{
     background: url(img/skul.jpg) no-repeat;
@@ -50,16 +84,18 @@ body{
                                         <img src="img/logoku.png" width="200" height="200">
                                         <p></p>
                                         <h1 class="h4 text-gray-900 mb-4">Aplikasi Pembayaran SPP</h1>
-                                        <h1 class="h4 text-gray-900 mb-4">Login Sebagai</h1>
+                                       
                                     </div>
                                     <form class="user" method="post" action="">
                                         <div class="form-group">
-                                            <a href="loginauth.php" class="btn btn-google btn-user btn-block"><i class="fas fa-user-alt"></i> Admin</a>
+                                            <input type="text" autocomplete="off" required name="user" class="form-control form-control-user" id="user" aria-describedby="emailHelp" placeholder="Username">
                                         </div>
                                         <div class="form-group">
-                                            <a href="loginuser.php" class="btn btn-facebook btn-user btn-block"><i
-                                            class="fas fa-users"></i> User</a>
+                                            <input type="password" autocomplete="off" required name="pass" class="form-control form-control-user"
+                                                id="pass" placeholder="Password">
                                         </div>
+                                        
+                                        <button type="submit" name="login" class="btn btn-primary btn-user btn-block">Login</button>
                                     </form>
                                 </div>
                             </div>

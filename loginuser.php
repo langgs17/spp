@@ -1,3 +1,37 @@
+<?php
+session_start();
+
+include 'koneksi.php';
+if(isset($_POST['login'])) {
+    $nama = htmlentities(strip_tags($_POST['nama']));
+    $nisn = htmlentities(strip_tags($_POST['nisn']));
+
+    $query = "SELECT * FROM siswa WHERE nama = '$nama'";
+    $exec = mysqli_query($conn,$query);
+    if(mysqli_num_rows($exec) !== 0) {
+        $query = "SELECT * FROM siswa WHERE nisn = '$nisn'";
+        $exec = mysqli_query($conn,$query);
+            if(mysqli_num_rows($exec) !== 0) {
+            $res = mysqli_fetch_assoc($exec);
+            $_SESSION['siswa'] = $res['id_siswa'];
+            $_SESSION['nama'] = $res['nama'];
+            $_SESSION['nisn'] = $res['nisn'];
+            header('location: index_user.php');
+
+    }else {
+        echo "<script>alert('Nama Siswa Tidak Sesuai');
+        document.location ='loginuser.php';
+        </script>";
+    }
+    }else{
+        echo "<script>alert('NISN Salah')
+        document.location ='loginuser.php';
+        </script>";
+    }
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,9 +43,10 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Login</title>
+    <title>Login User</title>
 
     <link href="img/logoku.png" rel="shortcut icon">
+ 
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -50,16 +85,17 @@ body{
                                         <img src="img/logoku.png" width="200" height="200">
                                         <p></p>
                                         <h1 class="h4 text-gray-900 mb-4">Aplikasi Pembayaran SPP</h1>
-                                        <h1 class="h4 text-gray-900 mb-4">Login Sebagai</h1>
                                     </div>
                                     <form class="user" method="post" action="">
                                         <div class="form-group">
-                                            <a href="loginauth.php" class="btn btn-google btn-user btn-block"><i class="fas fa-user-alt"></i> Admin</a>
+                                            <input type="text" autocomplete="off" required name="nama" class="form-control form-control-user" id="nama" aria-describedby="emailHelp" placeholder="Nama Siswa">
                                         </div>
                                         <div class="form-group">
-                                            <a href="loginuser.php" class="btn btn-facebook btn-user btn-block"><i
-                                            class="fas fa-users"></i> User</a>
+                                            <input type="text" autocomplete="off" required name="nisn" class="form-control form-control-user"
+                                                id="nisn" placeholder="NISN">
                                         </div>
+                                        
+                                        <button type="submit" name="login" class="btn btn-primary btn-user btn-block">Login</button>
                                     </form>
                                 </div>
                             </div>

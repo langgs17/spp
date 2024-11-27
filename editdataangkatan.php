@@ -6,7 +6,7 @@ if(isset($_GET['id_angkatan'])){
   $id_angkatan = $_GET['id_angkatan'];
   $exec        = mysqli_query($conn, "DELETE FROM angkatan WHERE id_angkatan='$id_angkatan'");
   if($exec){
-    echo "<script>alert(' angkatan berhasil dihapus')
+    echo "<script>alert('data angkatan berhasil dihapus')
     document.location = 'editdataangkatan.php';
     </script>";
   }else{

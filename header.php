@@ -44,14 +44,15 @@ session_start();
       </a>
 
       <!-- Divider -->
+      <hr class="sidebar-divider my-0">
 
-    <a class="nav-link" href="beranda.php">
-      <li class="nav-item">
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item active">
         <a class="nav-link" href="beranda.php">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
-    </a>
+
       <!-- Divider -->
       <hr class="sidebar-divider">
 
@@ -64,7 +65,7 @@ session_start();
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
           <i class="fas fa-fw fa-folder"></i>
-          <span>Transaksi</span>
+          <span>Transaksi SPP</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
