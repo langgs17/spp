@@ -72,7 +72,7 @@ if(isset($_SESSION['admin'])) {
 				<th>Keterangan</th>
 			</tr>
 			<?php
-			$spp	= mysqli_query($conn, "SELECT siswa.*,pembayaran.* FROM siswa,pembayaran WHERE pembayaran.id_siswa = siswa.id_siswa AND pembayaran.idspp = '$idspp' ORDER BY nobayar ASC");
+			$spp	= mysqli_query($conn, "SELECT siswa.*,pembayaran.* FROM siswa,pembayaran WHERE pembayaran.nisn = siswa.nisn AND pembayaran.idspp = '$idspp' ORDER BY nobayar ASC");
 			$i 		= 1;
 			$total	= 0;
 			while ($dta=mysqli_fetch_assoc($spp)) :

@@ -76,7 +76,7 @@ if(isset($_SESSION['siswa'])) {
 				<th>Keterangan</th>
 			</tr>
 			<?php
-			$spp	= mysqli_query($conn, "SELECT * FROM  pembayaran WHERE id_siswa = $_SESSION[siswa] ORDER BY nobayar = null");
+			$spp	= mysqli_query($conn, "SELECT * FROM  pembayaran WHERE nisn = $_SESSION[siswa] ORDER BY nobayar = null");
 			$i 		= 1;
 			$total	= 0;
 			while ($dta=mysqli_fetch_assoc($spp)) :

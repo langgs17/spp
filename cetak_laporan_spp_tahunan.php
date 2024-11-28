@@ -3,10 +3,10 @@
 
 	include 'koneksi.php';
 	
-	$id_siswa=$_GET["id_siswa"];
+	$nisn=$_GET["nisn"];
     $tahun=$_GET["tahun"];
 	$kelas=$_GET["kelas"];
-//echo "id siswa = $id_siswa";
+//echo "id siswa = $nisn";
 
 	?>
 	<!DOCTYPE html>
@@ -35,7 +35,7 @@
 		<hr/>
 		<?php
 		
-		$siswa	= mysqli_query($conn,"SELECT siswa.*,angkatan.*,jurusan.*,kelas.* FROM siswa, angkatan, jurusan, kelas WHERE siswa.id_angkatan = angkatan.nama_angkatan AND siswa.id_jurusan = jurusan.id_jurusan AND siswa.id_kelas = kelas.id_kelas AND siswa.id_siswa = $id_siswa");
+		$siswa	= mysqli_query($conn,"SELECT siswa.*,angkatan.*,jurusan.*,kelas.* FROM siswa, angkatan, jurusan, kelas WHERE siswa.id_angkatan = angkatan.nama_angkatan AND siswa.id_jurusan = jurusan.id_jurusan AND siswa.id_kelas = kelas.id_kelas AND siswa.nisn = $nisn");
 		$sw		= mysqli_fetch_assoc($siswa);
 		// $idspp	= $_GET['id'];
 
@@ -77,10 +77,10 @@
 				<th>Keterangan</th>
 			</tr>
 			<?php
-			$spp	= mysqli_query($conn, "SELECT siswa.*,pembayaran.* FROM siswa, pembayaran WHERE pembayaran.id_siswa = siswa.id_siswa AND siswa.id_siswa=". $id_siswa ." AND kelas=$kelas ORDER BY idspp");
+			$spp	= mysqli_query($conn, "SELECT siswa.*,pembayaran.* FROM siswa, pembayaran WHERE pembayaran.nisn = siswa.nisn AND siswa.nisn=". $nisn ." AND kelas=$kelas ORDER BY idspp");
 			$i 		= 1;
 			$total	= 0;
-            $jumlah="select sum(jumlah) from pembayaran where ket='lunas'and id_siswa=$id_siswa and kelas=$kelas";
+            $jumlah="select sum(jumlah) from pembayaran where ket='lunas'and nisn=$nisn and kelas=$kelas";
             $qjumlah=mysqli_query($conn,$jumlah);
             $jumlahtot=mysqli_fetch_array($qjumlah);
 			while ($dta=mysqli_fetch_assoc($spp)) :

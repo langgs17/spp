@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+$current_page = basename($_SERVER['PHP_SELF']);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +17,7 @@ session_start();
 
   <title>Pembayaran SPP RASECO SCHOOL</title>
 
-  <link href="img/logoku.png" rel="shortcut icon">
+  <link class="rounded-circle" href="img/logoku.png" rel="icon">
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -37,145 +39,126 @@ session_start();
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" >
-        
-        <img class="img-profile rounded-circle" height="200" width="200" src="img/logoku.png">
-        
+      <a class="sidebar-brand d-flex align-items-center justify-content-center mb-5 mt-4">
+        <img class="img-profile rounded-circle" height="100" width="100" src="img/logoku.png">
       </a>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
 
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="beranda.php">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span></a>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
       <div class="sidebar-heading">
-        MENU
+        Beranda
       </div>
 
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+      <li class="nav-item <?php echo ($current_page == 'beranda.php') ? 'active' : ''; ?>">
+        <a class="nav-link collapsed" href="beranda.php">
           <i class="fas fa-fw fa-folder"></i>
-          <span>Transaksi SPP</span>
+          <span>Beranda</span>
         </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Transaksi SPP:</h6>
-            <a class="collapse-item" href="pembayaran.php">Bayar SPP Siswa</a>
-            
-          </div>
-        </div>
       </li>
 
-      <!-- Nav Item - Utilities Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+      <div class="sidebar-heading">
+        Menu 
+      </div>
+      
+      <li class="nav-item <?php echo ($current_page == 'pembayaran.php') ? 'active' : ''; ?>">
+        <a class="nav-link collapsed" href="pembayaran.php">
+          <i class="fas fa-fw fa-folder"></i>
+          <span>Pembayaran</span>
+        </a>
+      </li>
+
+      <li class="nav-item <?php echo ($current_page == 'pengeluaran.php') ? 'active' : ''; ?>">
+        <a class="nav-link collapsed" href="pengeluaran.php">
+          <i class="fas fa-fw fa-folder"></i>
+          <span>Pengeluaran</span>
+        </a>
+      </li>
+
+      <li class="nav-item <?php echo ($current_page == 'kenaikankelas.php') ? 'active' : ''; ?>">
+        <a class="nav-link collapsed" href="kenaikankelas.php">
+          <i class="fas fa-fw fa-folder"></i>
+          <span>Kenaikan Kelas</span>
+        </a>
+      </li>
+
+
+      <div class="sidebar-heading">
+        Management Data 
+      </div>
+
+      <li class="nav-item <?php echo ($current_page == 'editdatasiswa.php') ? 'active' : ''; ?>">
+        <a class="nav-link collapsed" href="editdatasiswa.php">
           <i class="fas fa-fw fa-folder"></i>
           <span>Data Siswa</span>
         </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Data Siswa:</h6>
-            <a class="collapse-item" href="datasiswa.php">Lihat Data Siswa</a>
-            
-          </div>
-        </div>
       </li>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider">
+      <li class="nav-item <?php echo ($current_page == 'editdatakelas.php') ? 'active' : ''; ?>">
+        <a class="nav-link collapsed" href="editdatakelas.php">
+          <i class="fas fa-fw fa-folder"></i>
+          <span>Data Kelas</span>
+        </a>
+      </li>
 
-      <!-- Heading -->
+      <li class="nav-item <?php echo ($current_page == 'editdatajurusan.php') ? 'active' : ''; ?>">
+        <a class="nav-link collapsed" href="editdatajurusan.php">
+          <i class="fas fa-fw fa-folder"></i>
+          <span>Data Angkatan</span>
+        </a>
+      </li>
+
+      <li class="nav-item <?php echo ($current_page == 'editdataangkatan.php') ? 'active' : ''; ?>">
+        <a class="nav-link collapsed" href="editdataangkatan.php">
+          <i class="fas fa-fw fa-folder"></i>
+          <span>Data Angkatan</span>
+        </a>
+      </li>
+
+      <li class="nav-item <?php echo ($current_page == 'editdataadmin.php') ? 'active' : ''; ?>">
+        <a class="nav-link collapsed" href="editdataadmin.php">
+          <i class="fas fa-fw fa-folder"></i>
+          <span>Data Admin</span>
+        </a>
+      </li>
+
       <div class="sidebar-heading">
-        Master Data
+        Management Data 
       </div>
 
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-          <i class="fas fa-fw fa-folder"></i>
-          <span>Master Data</span>
-        </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="editdatasiswa.php">Data Siswa</a>
-            <a class="collapse-item" href="editdatakelas.php">Data Kelas</a>
-            <a class="collapse-item" href="kenaikankelas.php">Kenaikan Kelas</a>
-            <a class="collapse-item" href="editdatajurusan.php">Data Jurusan</a>
-            <a class="collapse-item" href="editdataangkatan.php">Data Angkatan</a>
-            <a class="collapse-item" href="editdataadmin.php">Data Admin</a>
-            <a class="collapse-item" href="editdatakepsek.php">Data Kepala Sekolah</a>
-          </div>
-        </div>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages1" aria-expanded="true" aria-controls="collapsePages">
+      <li class="nav-item <?php echo ($current_page == 'laporan.php') ? 'active' : ''; ?>">
+        <a class="nav-link collapsed" href="laporan.php">
           <i class="fas fa-fw fa-folder"></i>
           <span>Laporan</span>
         </a>
-        <div id="collapsePages1" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="laporan.php">Cetak Laporan</a>
-          </div>
-        </div>
       </li>
 
-      
-
-      <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
 
-      <!-- Sidebar Toggler (Sidebar) -->
-      <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-      </div>
-
     </ul>
-    <!-- End of Sidebar -->
-
-    <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
-      <!-- Main Content -->
       <div id="content">
 
-        <!-- Topbar -->
         <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-          <!-- Sidebar Toggle (Topbar) -->
           <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
             <i class="fa fa-bars"></i>
           </button>
 
-          <!-- Topbar Search -->
 
           <div class="input-group">
               <h3>RASECO SCHOOL</h3>
           </div>
 
-          <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
             
 
             <div class="topbar-divider d-none d-sm-block"></div>
 
-            <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="logout.php" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $_SESSION['nama_admin'] ?></span>
-                <img class="img-profile rounded-circle" src="img/undraw_female_avatar_w3jk.svg">
+                <i class="fas fa-user fa-lg fa-fw mr-2 text-gray-800"></i>
               </a>
-               <!-- Dropdown - User Information -->
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"aria-labelledby="userDropdown">
                   <a class="dropdown-item" href="editprofil.php?id_admin=<?= $_SESSION['admin']?>">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -193,12 +176,10 @@ session_start();
           </ul>
 
         </nav>
-        <!-- End of Topbar -->
 
-        <!-- Begin Page Content -->
         <div class="container-fluid">
 
          
 
           
-         
+        

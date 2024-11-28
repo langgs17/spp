@@ -3,8 +3,8 @@
 				<h5 class="m-0 font-weight-bold text-primary">Data Pembayaran 
                
                 
-						<input type="hidden" name="id_siswa" value="<?=$id_siswa?>">
-                        <a href="cetak_laporan_spp_tahunan.php?id_siswa=<?=$id_siswa?>&kelas=<?=$kelas?>&tahun=<?=$tahunanggaran;?>" class="btn btn-info" target="_blank"><i class="fa fa-print"></i> Cetak Rekap SPP</a>
+						<input type="hidden" name="nisn" value="<?=$nisn?>">
+                        <a href="cetak_laporan_spp_tahunan.php?nisn=<?=$nisn?>&kelas=<?=$kelas?>&tahun=<?=$tahunanggaran;?>" class="btn btn-info" target="_blank"><i class="fa fa-print"></i> Cetak Rekap SPP</a>
 						 </h5>
 			</div>
 			<div class="card-body">
@@ -25,7 +25,7 @@
 						<tbody>
 							<?php
 							$no=1;
-							$query = "SELECT * FROM pembayaran WHERE id_siswa = '$id_siswa' AND kelas=$kelas ORDER BY idspp ASC";
+							$query = "SELECT * FROM pembayaran WHERE nisn = '$nisn' AND kelas=$kelas ORDER BY idspp ASC";
 							$exec = mysqli_query($conn,$query);
 							while($res = mysqli_fetch_assoc($exec)) { ?>
 								<tr>

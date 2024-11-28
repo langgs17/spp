@@ -8,16 +8,16 @@ $idsiswa=$_POST['idsiswa'];
 
 
 if(isset($idsiswa)){
-	//$id_siswa= $_POST['id_siswa'];
-	$query	 = "SELECT siswa.*, angkatan.*, jurusan.*, kelas.* FROM siswa, angkatan, jurusan, kelas WHERE siswa.id_angkatan = angkatan.nama_angkatan AND siswa.id_jurusan = jurusan.id_jurusan AND siswa.id_kelas = kelas.id_kelas AND siswa.id_siswa = $idsiswa";
+	//$nisn= $_POST['nisn'];
+	$query	 = "SELECT siswa.*, angkatan.*, jurusan.*, kelas.* FROM siswa, angkatan, jurusan, kelas WHERE siswa.id_angkatan = angkatan.nama_angkatan AND siswa.id_jurusan = jurusan.id_jurusan AND siswa.id_kelas = kelas.id_kelas AND siswa.nisn = $idsiswa";
   $exec = mysqli_query($conn, $query);
   $res = mysqli_fetch_assoc($exec);
 
   $tahunmasuk=substr($res['nama_angkatan'],0,4);
   $tahunbaru=$tahunmasuk+1;
 
-$qceklunas=mysqli_query($conn, "select count(tglbayar) from pembayaran where tglbayar!=0 and id_siswa=$idsiswa and tahun=$tahunmasuk");
-//echo "select count(tglbayar) from pembayaran where tglbayar!=0 and id_siswa=$idsiswa and tahun=$tahunmasuk";
+$qceklunas=mysqli_query($conn, "select count(tglbayar) from pembayaran where tglbayar!=0 and nisn=$idsiswa and tahun=$tahunmasuk");
+//echo "select count(tglbayar) from pembayaran where tglbayar!=0 and nisn=$idsiswa and tahun=$tahunmasuk";
 $hceklunas=mysqli_fetch_array($qceklunas);
 if($hceklunas[0]<12){
     $togel="disabled";
@@ -31,7 +31,7 @@ elseif($hceklunas[0]==12){
   ?>
 
   <form action="editdatasiswa.php" method="post">
-     <input type="hidden" name="id_siswa" value="<?=$res['id_siswa'] ?>">
+     <input type="hidden" name="nisn" value="<?=$res['nisn'] ?>">
      <input type="hidden" name="nisn" value="<?= $res['nisn'] ?>">
      <input type="text" class="form-control mb-2" name="" disabled="" value="<?= $res['nisn'] ?>">
      <input type="text" class="form-control mb-2" required name="nama" value="<?= $res['nama'] ?>">

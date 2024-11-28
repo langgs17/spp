@@ -133,10 +133,10 @@ if (isset($_SESSION['siswa'])) {
 
             <?php
 
-            $tampilsiswa   = mysqli_query($conn, "SELECT siswa.*, angkatan.*, jurusan.*, kelas.* FROM siswa, angkatan, jurusan, kelas WHERE siswa.id_angkatan = angkatan.nama_angkatan AND siswa.id_jurusan = jurusan.id_jurusan AND siswa.id_kelas = kelas.id_kelas AND id_siswa = '$_SESSION[siswa]'");
+            $tampilsiswa   = mysqli_query($conn, "SELECT siswa.*, angkatan.*, jurusan.*, kelas.* FROM siswa, angkatan, jurusan, kelas WHERE siswa.id_angkatan = angkatan.nama_angkatan AND siswa.id_jurusan = jurusan.id_jurusan AND siswa.id_kelas = kelas.id_kelas AND nisn = '$_SESSION[siswa]'");
 
             $siswa    = mysqli_fetch_assoc($tampilsiswa);
-            $id_siswa = $_SESSION['siswa'];
+            $nisn = $_SESSION['siswa'];
 
             ?>
 
@@ -187,7 +187,7 @@ if (isset($_SESSION['siswa'])) {
                       $kelas = 10;
                       $namakelas = $hasil['kls10'];
 
-                      $ceklunas = mysqli_query($conn, "select count(tglbayar) from pembayaran where tglbayar!=0 and kelas=10 and id_siswa=$id_siswa");
+                      $ceklunas = mysqli_query($conn, "select count(tglbayar) from pembayaran where tglbayar!=0 and kelas=10 and nisn=$nisn");
                       $lunas = mysqli_fetch_array($ceklunas);
                       $lebar = $lunas[0] / 12 * 100;
                       if ($lebar <= 45) $progress = "progress-bar bg-danger";
@@ -231,7 +231,7 @@ if (isset($_SESSION['siswa'])) {
                       $tahunanggaran = $tahunanggaran + 1;
                       $nexttahunanggaran = $nexttahunanggaran + 1;
 
-                      $ceklunas = mysqli_query($conn, "select count(tglbayar) from pembayaran where tglbayar!=0 and kelas=11 and id_siswa=$id_siswa");
+                      $ceklunas = mysqli_query($conn, "select count(tglbayar) from pembayaran where tglbayar!=0 and kelas=11 and nisn=$nisn");
                       $lunas = mysqli_fetch_array($ceklunas);
                       $lebar = $lunas[0] / 12 * 100;
                       if ($lebar <= 45) $progress = "progress-bar bg-danger";
@@ -274,7 +274,7 @@ if (isset($_SESSION['siswa'])) {
                       $tahunanggaran = $tahunanggaran + 1;
                       $nexttahunanggaran = $nexttahunanggaran + 1;
 
-                      $ceklunas = mysqli_query($conn, "select count(tglbayar) from pembayaran where tglbayar!=0 and kelas=12 and id_siswa=$id_siswa");
+                      $ceklunas = mysqli_query($conn, "select count(tglbayar) from pembayaran where tglbayar!=0 and kelas=12 and nisn=$nisn");
                       $lunas = mysqli_fetch_array($ceklunas);
                       $lebar = $lunas[0] / 12 * 100;
                       if ($lebar <= 45) $progress = "progress-bar bg-danger";
@@ -327,11 +327,11 @@ if (isset($_SESSION['siswa'])) {
                       <h5 class="m-0 font-weight-bold text-primary">Cetak Data Laporan Sudah Lunas</h5>
                     </div>
                     <div class="card-body">
-                      <form action="cetak_laporan2.php?id_siswa=<?=$id_siswa?>" method="get" target="_blank">
+                      <form action="cetak_laporan2.php?nisn=<?=$nisn?>" method="get" target="_blank">
                         <div class="form-group row">
                           <div class="col-sm-2 mb-3 mb-sm-0">
                             <input type="date" name="awal" class="form-control mb-2">
-                            <input type="hidden" name="id_siswa" value="<?=$id_siswa;?>" class="form-control mb-2">
+                            <input type="hidden" name="nisn" value="<?=$nisn;?>" class="form-control mb-2">
                           </div>
                           <div class="col-sm-2 mb-3 mb-sm-0">
                             <input type="date" name="akhir" class="form-control mb-2">
@@ -354,7 +354,7 @@ if (isset($_SESSION['siswa'])) {
                         <div class="form-group row">
                           <div class="col-sm-2 mb-3 mb-sm-0">
                             <input type="date" name="awal" class="form-control mb-2">
-                            <input type="hidden" name="id_siswa" value="<?=$id_siswa;?>" class="form-control mb-2">
+                            <input type="hidden" name="nisn" value="<?=$nisn;?>" class="form-control mb-2">
                           </div>
                           <div class="col-sm-2 mb-3 mb-sm-0">
                             <input type="date" name="akhir" class="form-control mb-2">

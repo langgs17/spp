@@ -34,7 +34,7 @@ if (isset($_GET['nisn']) && $_GET['nisn'] != ''){
 
 	<?php
 	}else{
-		$id_siswa	= $siswa['id_siswa'];
+		$nisn	= $siswa['nisn'];
 		$nisn 		= $siswa['nisn'];
 		?>
 
@@ -85,7 +85,7 @@ if($hasil['kls10']!=NULL){
 	$kelas=10;
 	$namakelas=$hasil['kls10'];
 
-	$ceklunas=mysqli_query($conn,"select count(tglbayar) from pembayaran where tglbayar!=0 and kelas=10 and id_siswa=$id_siswa");
+	$ceklunas=mysqli_query($conn,"select count(tglbayar) from pembayaran where tglbayar!=0 and kelas=10 and nisn=$nisn");
 	$lunas=mysqli_fetch_array($ceklunas);
 	$lebar=$lunas[0]/12*100;
 	if($lebar<=45) $progress="progress-bar bg-danger";
@@ -129,7 +129,7 @@ if($hasil['kls11']!=NULL){
 	$tahunanggaran=$tahunanggaran+1;
 	$nexttahunanggaran=$nexttahunanggaran+1;
 
-	$ceklunas=mysqli_query($conn,"select count(tglbayar) from pembayaran where tglbayar!=0 and kelas=11 and id_siswa=$id_siswa");
+	$ceklunas=mysqli_query($conn,"select count(tglbayar) from pembayaran where tglbayar!=0 and kelas=11 and nisn=$nisn");
 	$lunas=mysqli_fetch_array($ceklunas);
 	$lebar=$lunas[0]/12*100;
 	if($lebar<=45) $progress="progress-bar bg-danger";
@@ -172,7 +172,7 @@ if($hasil['kls12']!=NULL){
 	$tahunanggaran=$tahunanggaran+1;
 	$nexttahunanggaran=$nexttahunanggaran+1;
 
-	$ceklunas=mysqli_query($conn,"select count(tglbayar) from pembayaran where tglbayar!=0 and kelas=12 and id_siswa=$id_siswa");
+	$ceklunas=mysqli_query($conn,"select count(tglbayar) from pembayaran where tglbayar!=0 and kelas=12 and nisn=$nisn");
 	$lunas=mysqli_fetch_array($ceklunas);
 	$lebar=$lunas[0]/12*100;
 	if($lebar<=45) $progress="progress-bar bg-danger";
@@ -236,7 +236,7 @@ if (isset($_GET['nisn']) && $_GET['nisn'] != ''){
                         <input type="date" name="akhir" class="form-control mb-2">
                       </div>
                       <div class="col-sm-2">.
-						<input type="hidden" name="id_siswa" value="<?=$id_siswa?>">
+						<input type="hidden" name="nisn" value="<?=$nisn?>">
                         <button type="submit" class="btn btn-primary" name="cetak">Cetak</button>
                       </div>
                     </div>

@@ -6,7 +6,7 @@ $idku=$_POST['idku'];
 echo "$id";
 echo "$_GET[id]";
 cek kelas sebelumnya
-$cek=mysqli_query($conn,"SELECT siswa.*, angkatan.*, jurusan.*, kelas.* FROM siswa, angkatan, jurusan, kelas WHERE siswa.id_angkatan = angkatan.id_angkatan AND siswa.id_jurusan = jurusan.id_jurusan AND siswa.id_kelas = kelas.id_kelas AND siswa.id_siswa = $idku");
+$cek=mysqli_query($conn,"SELECT siswa.*, angkatan.*, jurusan.*, kelas.* FROM siswa, angkatan, jurusan, kelas WHERE siswa.id_angkatan = angkatan.id_angkatan AND siswa.id_jurusan = jurusan.id_jurusan AND siswa.id_kelas = kelas.id_kelas AND siswa.nisn = $idku");
 $res = mysqli_fetch_assoc($cek);
 
 $hasil = implode(" ", array_slice(explode(" ", $res['nama_kelas']), 0, $jumlah));
@@ -23,16 +23,16 @@ $hasil = implode(" ", array_slice(explode(" ", $res['nama_kelas']), 0, $jumlah))
                 }
 
 */
-if(isset($_POST['id_siswa'])){
-	$id_siswa= $_POST['id_siswa'];
-	$query	 = "SELECT siswa.*, kelas.kelas FROM siswa INNER JOIN kelas ON siswa.id_kelas = kelas.id_kelas WHERE id_siswa = $id_siswa";
+if(isset($_POST['nisn'])){
+	$nisn= $_POST['nisn'];
+	$query	 = "SELECT siswa.*, kelas.kelas FROM siswa INNER JOIN kelas ON siswa.id_kelas = kelas.id_kelas WHERE nisn = $nisn";
   $exec = mysqli_query($conn, $query);
   $res = mysqli_fetch_assoc($exec);
   $kelas = $res['kelas'];
   ?>
 
   <form action="editdatasiswa.php" method="post">
-     <input type="hidden" name="id_siswa" value="<?=$res['id_siswa'] ?>">
+     <input type="hidden" name="nisn" value="<?=$res['nisn'] ?>">
      <input type="hidden" name="kelas" value="<?=$res['kelas'] ?>">
      <input type="text" class="form-control mb-2" readonly name="nisn" value="<?= $res['nisn'] ?>">
      <input type="text" class="form-control mb-2" required name="nama" value="<?= $res['nama'] ?>">
@@ -99,14 +99,14 @@ if(isset($_POST['id_siswa'])){
 <?php
 
 if(isset($_POST['kenaikan'])){
-  $id_siswa= $_POST['kenaikan'];
-  $query   = "SELECT siswa.*, angkatan.*, jurusan.*, kelas.* FROM siswa, angkatan, jurusan, kelas WHERE siswa.id_angkatan = angkatan.id_angkatan AND siswa.id_jurusan = jurusan.id_jurusan AND siswa.id_kelas = kelas.id_kelas AND siswa.id_siswa = $id_siswa";
+  $nisn= $_POST['kenaikan'];
+  $query   = "SELECT siswa.*, angkatan.*, jurusan.*, kelas.* FROM siswa, angkatan, jurusan, kelas WHERE siswa.id_angkatan = angkatan.id_angkatan AND siswa.id_jurusan = jurusan.id_jurusan AND siswa.id_kelas = kelas.id_kelas AND siswa.nisn = $nisn";
   $exec = mysqli_query($conn, $query);
   $res = mysqli_fetch_assoc($exec);
   ?>
 
   <form action="kenaikankelas.php" method="post">
-   <input type="hidden" name="id_siswa" value="<?=$res['id_siswa'] ?>">
+   <input type="hidden" name="nisn" value="<?=$res['nisn'] ?>">
    <select class="form-control mb-2" name="id_angkatan">
     <option selected="" > Pilih Angkatan </option>
     <?php

@@ -4,9 +4,9 @@
 	include 'koneksi.php';
 	$awal	= $_GET['awal'] ;
 	$akhir	= $_GET['akhir'] ;
-	$id_siswa=$_GET["id_siswa"];
-	//echo "idsiswa =$id_siswa";
-//echo "id siswa = $id_siswa";
+	$nisn=$_GET["nisn"];
+	//echo "idsiswa =$nisn";
+//echo "id siswa = $nisn";
 
 	?>
 	<!DOCTYPE html>
@@ -35,7 +35,7 @@
 		<hr/>
 		<?php
 		
-		$siswa	= mysqli_query($conn,"SELECT siswa.*,angkatan.*,jurusan.*,kelas.* FROM siswa,angkatan,jurusan,kelas WHERE siswa.id_angkatan = angkatan.nama_angkatan AND siswa.id_jurusan = jurusan.id_jurusan AND siswa.id_kelas = kelas.id_kelas AND siswa.id_siswa = '$id_siswa'");
+		$siswa	= mysqli_query($conn,"SELECT siswa.*,angkatan.*,jurusan.*,kelas.* FROM siswa,angkatan,jurusan,kelas WHERE siswa.id_angkatan = angkatan.nama_angkatan AND siswa.id_jurusan = jurusan.id_jurusan AND siswa.id_kelas = kelas.id_kelas AND siswa.nisn = '$nisn'");
 		$sw		= mysqli_fetch_assoc($siswa);
 		// $idspp	= $_GET['id'];
 
@@ -77,7 +77,7 @@
 				<th>Keterangan</th>
 			</tr>
 			<?php
-			$spp	= mysqli_query($conn, "SELECT siswa.*,pembayaran.* FROM siswa, pembayaran WHERE pembayaran.id_siswa = siswa.id_siswa AND tglbayar BETWEEN '$awal' AND '$akhir' AND siswa.id_siswa=$id_siswa AND ket='LUNAS' ORDER BY nobayar");
+			$spp	= mysqli_query($conn, "SELECT siswa.*,pembayaran.* FROM siswa, pembayaran WHERE pembayaran.nisn = siswa.nisn AND tglbayar BETWEEN '$awal' AND '$akhir' AND siswa.nisn=$nisn AND ket='LUNAS' ORDER BY nobayar");
 			$i 		= 1;
 			$total	= 0;
 			while ($dta=mysqli_fetch_assoc($spp)) :

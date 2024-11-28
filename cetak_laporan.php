@@ -45,7 +45,7 @@ if(isset($_SESSION['admin'])) {
 			</tr>
 
 			<?php
-			$spp	= mysqli_query($conn,"SELECT siswa.*,pembayaran.* FROM siswa, pembayaran WHERE pembayaran.id_siswa = siswa.id_siswa AND tglbayar BETWEEN '$awal' AND '$akhir' ORDER BY nobayar");
+			$spp	= mysqli_query($conn,"SELECT siswa.*,pembayaran.* FROM siswa, pembayaran WHERE pembayaran.nisn = siswa.nisn AND tglbayar BETWEEN '$awal' AND '$akhir' ORDER BY nobayar");
 			$i		= 1;
 			$total	= 0;
 			while($dta=mysqli_fetch_assoc($spp)) :

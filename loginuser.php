@@ -13,7 +13,7 @@ if(isset($_POST['login'])) {
         $exec = mysqli_query($conn,$query);
             if(mysqli_num_rows($exec) !== 0) {
             $res = mysqli_fetch_assoc($exec);
-            $_SESSION['siswa'] = $res['id_siswa'];
+            $_SESSION['siswa'] = $res['nisn'];
             $_SESSION['nama'] = $res['nama'];
             $_SESSION['nisn'] = $res['nisn'];
             header('location: index_user.php');

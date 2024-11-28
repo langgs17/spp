@@ -8,10 +8,10 @@ if (isset($_GET['nisn'])) {
   $exec = mysqli_query($conn, $query);
   $res = mysqli_fetch_assoc($exec);
 
-  $id_siswa = $res['id_siswa'];
+  $nisn = $res['nisn'];
 
   $exec     = mysqli_query($conn, "DELETE FROM siswa WHERE nisn='$nisn'");
-  $exec1     = mysqli_query($conn, "DELETE FROM pembayaran WHERE id_siswa='$id_siswa'");
+  $exec1     = mysqli_query($conn, "DELETE FROM pembayaran WHERE nisn='$nisn'");
   $exec2     = mysqli_query($conn, "DELETE FROM siswatemp WHERE nisn='$nisn'");
 
   if ($exec && $exec1) {
@@ -37,6 +37,7 @@ while ($hasil = mysqli_fetch_array($q)) {
 }
 
 ?>
+
 
 <!-- button triger -->
 <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Tambah Data</button>
@@ -71,7 +72,6 @@ while ($hasil = mysqli_fetch_array($q)) {
 
           ?>
             <tr>
-              <td hidden><?= $res['id_siswa'] ?></td>
               <td><?= $res['nisn'] ?></td>
               <td><?= $res['nama'] ?></td>
               <td><?= $res['nama_angkatan'] ?></td>
@@ -82,7 +82,7 @@ while ($hasil = mysqli_fetch_array($q)) {
               <td><?= $res['alamat'] ?></td>
               <td>
                 <a href="editdatasiswa.php?nisn=<?= $res['nisn'] ?>" class="btn btn-sm btn-danger" onclick="return confirm ('Apakah yakin ingin menghapus siswa (<?php echo $res['nama']; ?>) ?')">Hapus</a>
-                <a href="#" class="view_data btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#myModal" id="<?php echo $res['id_siswa']; ?>">Edit</a>
+                <a href="#" class="view_data btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#myModal" id="<?php echo $res['nisn']; ?>">Edit</a>
               </td>
             </tr>
           <?php endwhile; ?>
@@ -102,6 +102,7 @@ while ($hasil = mysqli_fetch_array($q)) {
       </div>
       <div class="modal-body">
         <form action="" method="POST">
+          <input type="number" required name="nisn" placeholder="Masukan NISN" class="form-control mb-2">
           <input type="text" required name="nama" placeholder="Nama Siswa" class="form-control mb-2">
           <select class="form-control mb-2" name="jenis_kelamin">
             <option selected="">Jenis Kelamin</option>
@@ -173,7 +174,7 @@ if (isset($_POST['simpan'])) {
   $id_jurusan    = htmlentities(strip_tags($_POST['id_jurusan']));
   $id_kelas      = htmlentities(strip_tags($_POST['id_kelas']));
   $alamat        = htmlentities(strip_tags(ucwords($_POST['alamat'])));
-  $nisn          = date('YmdHis');
+  $nisn = htmlentities(strip_tags($_POST['nisn']));
   $tahun         = htmlentities(strip_tags($_POST['id_angkatan']));
   $jenis_kelamin = htmlentities(strip_tags($_POST['jenis_kelamin']));
   $ttl           = htmlentities(strip_tags($_POST['ttl']));
@@ -190,57 +191,48 @@ if (isset($_POST['simpan'])) {
   $qq = mysqli_query($conn, $q2);
 
   if ($exec) {
-
     $bulanIndo = [
-      '1' => 'Januari',
-      '2' => 'Februari',
-      '3' => 'Maret',
-      '4' => 'April',
-      '5' => 'Mei',
-      '6' => 'Juni',
-      '7' => 'Juli',
-      '8' => 'Agustus',
-      '9' => 'September',
-      '10' => 'Oktober',
-      '11' => 'November',
-      '12' => 'Desember'
+        '1' => 'Januari',
+        '2' => 'Februari',
+        '3' => 'Maret',
+        '4' => 'April',
+        '5' => 'Mei',
+        '6' => 'Juni',
+        '7' => 'Juli',
+        '8' => 'Agustus',
+        '9' => 'September',
+        '10' => 'Oktober',
+        '11' => 'November',
+        '12' => 'Desember'
     ];
 
-  
-
-    $query = "SELECT siswa.*,angkatan.* FROM siswa,angkatan WHERE siswa.id_angkatan = angkatan.nama_angkatan ORDER BY  siswa.id_siswa DESC LIMIT 1";
-    $exec       = mysqli_query($conn, $query);
-    $res        = mysqli_fetch_assoc($exec);
-    $biaya      = $res['biaya'];
-    $id_siswa   = $res['id_siswa'];
-    $ket        = $res['ket'];
-    $awaltempo  = date('d-m-Y');
+    $query = "SELECT siswa.*, angkatan.* FROM siswa, angkatan WHERE siswa.nisn = '$nisn' AND siswa.id_angkatan = angkatan.nama_angkatan";
+    $exec = mysqli_query($conn, $query);
+    $res = mysqli_fetch_assoc($exec);
+    $biaya = $res['biaya'];
+    $nisn = $res['nisn'];
+    $ket = $res['ket'];
+    $awaltempo = date('d-m-Y');
     $id_kelas = $res['id_kelas'];
 
-    $getkelas=mysqli_query($conn, "select kelas from kelas where id_kelas=$id_kelas");
-    $hasil=mysqli_fetch_array($getkelas);
+    $getkelas = mysqli_query($conn, "SELECT kelas FROM kelas WHERE id_kelas = $id_kelas");
+    $hasil = mysqli_fetch_array($getkelas);
 
     for ($i = 7; $i <= 12; $i++) {
-      // tanggal jatuh tempo setiap tanggal ?
-      $jatuhtempo = date("d-m-Y", strtotime("+$i month", strtotime($awaltempo)));
-
-      $bulan = "$bulanIndo[$i] $tahunanggaran";
-      // simpan data
-
-      $ket    = 'BELUM DIBAYAR';
-
-      $add = mysqli_query($conn, "INSERT INTO pembayaran(id_siswa , jatuhtempo, bulan, jumlah, ket, tahun, kelas) VALUES ('$id_siswa','$tahunanggaran','$bulan','$biaya', '$ket','$tahunanggaran','$hasil[0]')");
+        $jatuhtempo = date("d-m-Y", strtotime("+$i month", strtotime($awaltempo)));
+        $bulan = "$bulanIndo[$i] $tahunanggaran";
+        $ket = 'BELUM DIBAYAR';
+        $add = mysqli_query($conn, "INSERT INTO pembayaran(nisn, jatuhtempo, bulan, jumlah, ket, tahun, kelas) 
+                                   VALUES ('$nisn', '$tahunanggaran', '$bulan', '$biaya', '$ket', '$tahunanggaran', '$hasil[0]')");
     }
+
+    // Insert pembayaran untuk tahun berikutnya
     for ($i = 1; $i <= 6; $i++) {
-      // tanggal jatuh tempo setiap tanggal ?
-      $jatuhtempo = date("d-m-Y", strtotime("+$i month", strtotime($awaltempo)));
-
-      $bulan = "$bulanIndo[$i] $nexttahunanggaran";
-      // simpan data
-
-      $ket    = 'BELUM DIBAYAR';
-
-      $add = mysqli_query($conn, "INSERT INTO pembayaran(id_siswa , jatuhtempo, bulan, jumlah, ket, tahun, kelas) VALUES ('$id_siswa','$nexttahunanggaran','$bulan','$biaya', '$ket','$tahunanggaran','$hasil[0]')");
+        $jatuhtempo = date("d-m-Y", strtotime("+$i month", strtotime($awaltempo)));
+        $bulan = "$bulanIndo[$i] $nexttahunanggaran";
+        $ket = 'BELUM DIBAYAR';
+        $add = mysqli_query($conn, "INSERT INTO pembayaran(nisn, jatuhtempo, bulan, jumlah, ket, tahun, kelas) 
+                                   VALUES ('$nisn', '$nexttahunanggaran', '$bulan', '$biaya', '$ket', '$tahunanggaran', '$hasil[0]')");
     }
 
     echo "<script>alert('data siswa berhasil disimpan')
@@ -258,12 +250,12 @@ if (isset($_POST['simpan'])) {
 
 <script type="text/javascript">
   $('.view_data').click(function() {
-    var id_siswa = $(this).attr('id');
+    var nisn = $(this).attr('id');
     $.ajax({
       url: 'view.php',
       method: 'post',
       data: {
-        id_siswa: id_siswa
+        nisn: nisn
       },
       success: function(data) {
         $('#datasiswa').html(data)
@@ -273,11 +265,10 @@ if (isset($_POST['simpan'])) {
   })
 </script>
 
-
 <?php
 if (isset($_POST['edit'])) {
 
-  $id_siswa = $_POST['id_siswa'];
+  $nisn = $_POST['nisn'];
   $nisn = $_POST['nisn'];
   $nama = $_POST['nama'];
   $id_angkatan = $_POST['nama_angkatan'];
@@ -288,7 +279,7 @@ if (isset($_POST['edit'])) {
   $ttl = $_POST['ttl'];
   $kelas = $_POST['kelas'];
 
-  $slqupdatesiswa = "UPDATE siswa SET nisn = '$nisn', nama = '$nama', id_angkatan = '$id_angkatan', id_kelas = '$id_kelas', id_jurusan = '$id_jurusan', alamat = '$alamat', jenis_kelamin = '$jenis_kelamin', ttl = '$ttl' WHERE id_siswa = '$id_siswa'";
+  $slqupdatesiswa = "UPDATE siswa SET nisn = '$nisn', nama = '$nama', id_angkatan = '$id_angkatan', id_kelas = '$id_kelas', id_jurusan = '$id_jurusan', alamat = '$alamat', jenis_kelamin = '$jenis_kelamin', ttl = '$ttl' WHERE nisn = '$nisn'";
   $updatesiswabaru = mysqli_query($conn, $slqupdatesiswa);
 
   if ($updatesiswabaru) {

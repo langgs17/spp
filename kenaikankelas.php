@@ -38,7 +38,7 @@ include 'koneksi.php';
               <td><?= $res['alamat'] ?></td>
               <td>
                 <?php
-                $idku = $res['id_siswa'];
+                $idku = $res['nisn'];
                 if ($res['kelas'] == "12") {
                 ?>
 
@@ -129,7 +129,7 @@ include 'koneksi.php';
 
 <?php
 if (isset($_POST['naik'])) {
-  $id_siswa     = $_POST['id_siswa'];
+  $nisn     = $_POST['nisn'];
   $id_angkatan  = htmlentities(strip_tags($_POST['id_angkatan']));
   $id_kelas     = htmlentities(strip_tags($_POST['id_kelas']));
 
@@ -152,12 +152,12 @@ if (isset($_POST['naik'])) {
       '12' => 'Desember'
     ];
 
-    $query = "SELECT siswa.*,angkatan.* FROM siswa,angkatan WHERE siswa.id_angkatan = angkatan.id_angkatan AND siswa.id_siswa='$id_siswa' ORDER BY  siswa.id_siswa DESC LIMIT 1";
+    $query = "SELECT siswa.*,angkatan.* FROM siswa,angkatan WHERE siswa.id_angkatan = angkatan.id_angkatan AND siswa.nisn='$nisn' ORDER BY  siswa.nisn DESC LIMIT 1";
 
     $exec       = mysqli_query($conn, $query);
     $res        = mysqli_fetch_assoc($exec);
     $biaya      = $res['biaya'];
-    $id_siswa   = $res['id_siswa'];
+    $nisn   = $res['nisn'];
     $ket        = $res['ket'];
     $awaltempo  = date('d-m-Y');
     for ($i = 0; $i < 12; $i++) {
@@ -169,7 +169,7 @@ if (isset($_POST['naik'])) {
 
       $ket    = 'BELUM DIBAYAR';
 
-      $add = mysqli_query($conn, "INSERT INTO pembayaran(id_siswa , jatuhtempo, bulan, jumlah, ket) VALUES ('$id_siswa','$jatuhtempo','$bulan','$biaya', '$ket')");
+      $add = mysqli_query($conn, "INSERT INTO pembayaran(nisn , jatuhtempo, bulan, jumlah, ket) VALUES ('$nisn','$jatuhtempo','$bulan','$biaya', '$ket')");
     }
 
     echo "<script>alert('Kenaikan kelas siswa berhasil')

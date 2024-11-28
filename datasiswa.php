@@ -1,4 +1,5 @@
-<?php include 'header.php'; 
+<?php 
+include 'header.php'; 
 include 'koneksi.php';
 ?>
 
@@ -23,7 +24,7 @@ include 'koneksi.php';
         </thead>
         <tbody>
           <?php
-          $query = "SELECT siswa.*, angkatan.*, jurusan.*, kelas.* FROM siswa, angkatan, jurusan, kelas WHERE siswa.id_angkatan = angkatan.nama_angkatan AND siswa.id_jurusan = jurusan.id_jurusan AND siswa.id_kelas = kelas.id_kelas ORDER BY id_siswa";
+          $query = "SELECT siswa.*, angkatan.*, jurusan.*, kelas.* FROM siswa, angkatan, jurusan, kelas WHERE siswa.id_angkatan = angkatan.nama_angkatan AND siswa.id_jurusan = jurusan.id_jurusan AND siswa.id_kelas = kelas.id_kelas ORDER BY nisn";
           $exec = mysqli_query($conn, $query);
           while($res = mysqli_fetch_assoc($exec)) :
 
