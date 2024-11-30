@@ -18,7 +18,7 @@ if (isset($_SESSION['siswa'])) {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Pembayaran SPP RASECO SCHOOL</title>
+    <title>Pembayaran SPP SMKS NUSANTARA 1 CIPUTAT</title>
 
     <link href="img/logoku.png" rel="shortcut icon">
 
@@ -87,7 +87,7 @@ if (isset($_SESSION['siswa'])) {
             <!-- Topbar Search -->
 
             <div class="input-group">
-              <h1>RASECO SCHOOL</h1>
+              <h1>SMKS NUSANTARA 1 CIPUTAT</h1>
             </div>
 
             <!-- Topbar Navbar -->

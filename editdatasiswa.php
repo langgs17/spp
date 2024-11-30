@@ -38,17 +38,43 @@ while ($hasil = mysqli_fetch_array($q)) {
 
 ?>
 
+<style>
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+  }
 
-<!-- button triger -->
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+</style>
+
 <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Tambah Data</button>
-<!-- button triger -->
 
-<!-- DataTales Example -->
 <div class="card shadow mb-4">
   <div class="card-header py-3">
     <h5 class="m-0 font-weight-bold text-primary">Data Siswa</h5>
   </div>
   <div class="card-body">
+    <form method="GET" action="">
+      <div class="form-group">
+        <label for="filterAngkatan">Pilih Angkatan:</label>
+        <select name="angkatan" id="filterAngkatan" class="form-control" onchange="this.form.submit()">
+          <option value="">Semua Angkatan</option>
+          <?php
+          // Ambil data angkatan dari database
+          $angkatanQuery = "SELECT DISTINCT nama_angkatan FROM angkatan ORDER BY nama_angkatan ASC";
+          $angkatanExec = mysqli_query($conn, $angkatanQuery);
+          while ($angkatanRow = mysqli_fetch_assoc($angkatanExec)) {
+            $selected = (isset($_GET['angkatan']) && $_GET['angkatan'] == $angkatanRow['nama_angkatan']) ? 'selected' : '';
+            echo "<option value='{$angkatanRow['nama_angkatan']}' $selected>{$angkatanRow['nama_angkatan']}</option>";
+          }
+          ?>
+        </select>
+      </div>
+    </form>
     <div class="table-responsive">
       <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
         <thead>
@@ -66,10 +92,21 @@ while ($hasil = mysqli_fetch_array($q)) {
         </thead>
         <tbody>
           <?php
-          $query = "SELECT siswa.*, angkatan.*, jurusan.*, kelas.* FROM siswa, angkatan, jurusan, kelas WHERE siswa.id_angkatan = angkatan.nama_angkatan AND siswa.id_jurusan = jurusan.id_jurusan AND siswa.id_kelas = kelas.id_kelas ORDER BY siswa.nama DESC";
+          // Filter angkatan jika dipilih
+          $filterAngkatan = isset($_GET['angkatan']) && !empty($_GET['angkatan']) ? $_GET['angkatan'] : '';
+          $query = "SELECT siswa.*, angkatan.*, jurusan.*, kelas.* 
+                    FROM siswa 
+                    JOIN angkatan ON siswa.id_angkatan = angkatan.nama_angkatan 
+                    JOIN jurusan ON siswa.id_jurusan = jurusan.id_jurusan 
+                    JOIN kelas ON siswa.id_kelas = kelas.id_kelas";
+
+          if ($filterAngkatan) {
+            $query .= " WHERE angkatan.nama_angkatan = '$filterAngkatan'";
+          }
+
+          $query .= " ORDER BY siswa.nama DESC";
           $exec = mysqli_query($conn, $query);
           while ($res = mysqli_fetch_assoc($exec)) :
-
           ?>
             <tr>
               <td><?= $res['nisn'] ?></td>
@@ -92,6 +129,7 @@ while ($hasil = mysqli_fetch_array($q)) {
   </div>
 </div>
 
+
 <!-- Modal Tambah Data -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -102,7 +140,7 @@ while ($hasil = mysqli_fetch_array($q)) {
       </div>
       <div class="modal-body">
         <form action="" method="POST">
-          <input type="number" required name="nisn" placeholder="Masukan NISN" class="form-control mb-2">
+          <input type="number" maxlength="10" oninput="this.value = this.value.slice(0, 10);" required name="nisn" placeholder="Masukan NISN" class="form-control mb-2">
           <input type="text" required name="nama" placeholder="Nama Siswa" class="form-control mb-2">
           <select class="form-control mb-2" name="jenis_kelamin">
             <option selected="">Jenis Kelamin</option>
@@ -127,7 +165,6 @@ while ($hasil = mysqli_fetch_array($q)) {
               echo "<option value = " . $angkatan['id_jurusan'] . ">" . $angkatan['nama_jurusan'] . "</option>";
             endwhile;
             ?>
-          </select>
           </select>
           <select class="form-control mb-2" name="id_kelas">
             <option selected="">Pilih Kelas</option>
@@ -212,27 +249,24 @@ if (isset($_POST['simpan'])) {
     $biaya = $res['biaya'];
     $nisn = $res['nisn'];
     $ket = $res['ket'];
-    $awaltempo = date('d-m-Y');
     $id_kelas = $res['id_kelas'];
 
     $getkelas = mysqli_query($conn, "SELECT kelas FROM kelas WHERE id_kelas = $id_kelas");
     $hasil = mysqli_fetch_array($getkelas);
 
     for ($i = 7; $i <= 12; $i++) {
-        $jatuhtempo = date("d-m-Y", strtotime("+$i month", strtotime($awaltempo)));
         $bulan = "$bulanIndo[$i] $tahunanggaran";
         $ket = 'BELUM DIBAYAR';
-        $add = mysqli_query($conn, "INSERT INTO pembayaran(nisn, jatuhtempo, bulan, jumlah, ket, tahun, kelas) 
-                                   VALUES ('$nisn', '$tahunanggaran', '$bulan', '$biaya', '$ket', '$tahunanggaran', '$hasil[0]')");
+        $add = mysqli_query($conn, "INSERT INTO pembayaran(nisn, bulan, jumlah, ket, tahun, kelas) 
+                                   VALUES ('$nisn', '$bulan', '$biaya', '$ket', '$tahunanggaran', '$hasil[0]')");
     }
 
     // Insert pembayaran untuk tahun berikutnya
     for ($i = 1; $i <= 6; $i++) {
-        $jatuhtempo = date("d-m-Y", strtotime("+$i month", strtotime($awaltempo)));
         $bulan = "$bulanIndo[$i] $nexttahunanggaran";
         $ket = 'BELUM DIBAYAR';
-        $add = mysqli_query($conn, "INSERT INTO pembayaran(nisn, jatuhtempo, bulan, jumlah, ket, tahun, kelas) 
-                                   VALUES ('$nisn', '$nexttahunanggaran', '$bulan', '$biaya', '$ket', '$tahunanggaran', '$hasil[0]')");
+        $add = mysqli_query($conn, "INSERT INTO pembayaran(nisn, bulan, jumlah, ket, tahun, kelas) 
+                                   VALUES ('$nisn', '$bulan', '$biaya', '$ket', '$nexttahunanggaran', '$hasil[0]')");
     }
 
     echo "<script>alert('data siswa berhasil disimpan')

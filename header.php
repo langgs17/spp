@@ -15,7 +15,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Pembayaran SPP RASECO SCHOOL</title>
+  <title>Pembayaran SPP SMKS NUSANTARA 1 CIPUTAT</title>
 
   <link class="rounded-circle" href="img/logoku.png" rel="icon">
 
@@ -50,7 +50,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
       <li class="nav-item <?php echo ($current_page == 'beranda.php') ? 'active' : ''; ?>">
         <a class="nav-link collapsed" href="beranda.php">
-          <i class="fas fa-fw fa-folder"></i>
+          <i class="fas fa-fw fa-home"></i>
           <span>Beranda</span>
         </a>
       </li>
@@ -61,21 +61,21 @@ $current_page = basename($_SERVER['PHP_SELF']);
       
       <li class="nav-item <?php echo ($current_page == 'pembayaran.php') ? 'active' : ''; ?>">
         <a class="nav-link collapsed" href="pembayaran.php">
-          <i class="fas fa-fw fa-folder"></i>
+          <i class="fas fa-fw fa-credit-card"></i>
           <span>Pembayaran</span>
         </a>
       </li>
 
       <li class="nav-item <?php echo ($current_page == 'pengeluaran.php') ? 'active' : ''; ?>">
         <a class="nav-link collapsed" href="pengeluaran.php">
-          <i class="fas fa-fw fa-folder"></i>
+          <i class="fas fa-fw fa-share"></i>
           <span>Pengeluaran</span>
         </a>
       </li>
 
       <li class="nav-item <?php echo ($current_page == 'kenaikankelas.php') ? 'active' : ''; ?>">
         <a class="nav-link collapsed" href="kenaikankelas.php">
-          <i class="fas fa-fw fa-folder"></i>
+          <i class="fas fa-fw fa-user-graduate"></i>
           <span>Kenaikan Kelas</span>
         </a>
       </li>
@@ -87,46 +87,46 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
       <li class="nav-item <?php echo ($current_page == 'editdatasiswa.php') ? 'active' : ''; ?>">
         <a class="nav-link collapsed" href="editdatasiswa.php">
-          <i class="fas fa-fw fa-folder"></i>
+          <i class="fas fa-fw fa-user"></i>
           <span>Data Siswa</span>
         </a>
       </li>
 
       <li class="nav-item <?php echo ($current_page == 'editdatakelas.php') ? 'active' : ''; ?>">
         <a class="nav-link collapsed" href="editdatakelas.php">
-          <i class="fas fa-fw fa-folder"></i>
+          <i class="fas fa-fw fa-chalkboard-teacher"></i>
           <span>Data Kelas</span>
         </a>
       </li>
 
       <li class="nav-item <?php echo ($current_page == 'editdatajurusan.php') ? 'active' : ''; ?>">
         <a class="nav-link collapsed" href="editdatajurusan.php">
-          <i class="fas fa-fw fa-folder"></i>
-          <span>Data Angkatan</span>
+          <i class="fas fa-fw fa-stream"></i>
+          <span>Data Jurusan</span>
         </a>
       </li>
 
       <li class="nav-item <?php echo ($current_page == 'editdataangkatan.php') ? 'active' : ''; ?>">
         <a class="nav-link collapsed" href="editdataangkatan.php">
-          <i class="fas fa-fw fa-folder"></i>
+          <i class="fas fa-fw fa-clock"></i>
           <span>Data Angkatan</span>
         </a>
       </li>
 
       <li class="nav-item <?php echo ($current_page == 'editdataadmin.php') ? 'active' : ''; ?>">
         <a class="nav-link collapsed" href="editdataadmin.php">
-          <i class="fas fa-fw fa-folder"></i>
+          <i class="fas fa-fw fa-user-check"></i>
           <span>Data Admin</span>
         </a>
       </li>
 
       <div class="sidebar-heading">
-        Management Data 
+        Reportainment 
       </div>
 
       <li class="nav-item <?php echo ($current_page == 'laporan.php') ? 'active' : ''; ?>">
         <a class="nav-link collapsed" href="laporan.php">
-          <i class="fas fa-fw fa-folder"></i>
+          <i class="fas fa-fw fa-file-pdf"></i>
           <span>Laporan</span>
         </a>
       </li>
@@ -146,7 +146,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
 
           <div class="input-group">
-              <h3>RASECO SCHOOL</h3>
+              <h3>SMKS NUSANTARA 1 CIPUTAT</h3>
           </div>
 
           <ul class="navbar-nav ml-auto">

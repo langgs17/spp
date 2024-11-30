@@ -26,7 +26,7 @@ if(isset($_SESSION['admin'])) {
 		</style>
 	</head>
 	<body onload="window.print();">
-		<h3>RASECO SCHOOL<b><br/>LAPORAN PEMBAYARAN SPP</b></h3>
+		<h3>SMKS NUSANTARA 1 CIPUTAT<b><br/>LAPORAN PEMBAYARAN SPP</b></h3>
 		<br/>
 		<hr/>
 		Tanggal <?= $awal." Sampai ".$akhir?>

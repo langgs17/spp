@@ -28,7 +28,7 @@
 		</style>
 	</head>
 	<body onload="window.print();">
-		<h3>RASECO SCHOOL<b><br/>LAPORAN PEMBAYARAN SPP TAHUN <?=$tahun?>/<?=$tahun+1?></b></h3>
+		<h3>SMKS NUSANTARA 1 CIPUTAT<b><br/>LAPORAN PEMBAYARAN SPP TAHUN <?=$tahun?>/<?=$tahun+1?></b></h3>
 		<br/>
 		
 		<br/>
